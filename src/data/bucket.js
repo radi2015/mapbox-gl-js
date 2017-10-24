@@ -7,6 +7,7 @@ import type Style from '../style/style';
 import type StyleLayer from '../style/style_layer';
 import type FeatureIndex from './feature_index';
 import type {Transferable} from '../types/transferable';
+import type Context from '../gl/context';
 
 export type BucketParameters = {
     index: number,
@@ -62,7 +63,7 @@ export interface Bucket {
     isEmpty(): boolean;
     serialize(transferables?: Array<Transferable>): SerializedBucket;
 
-    upload(gl: WebGLRenderingContext): void;
+    upload(context: Context): void;
     uploaded: boolean;
 
     /**

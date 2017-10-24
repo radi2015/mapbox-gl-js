@@ -1,8 +1,6 @@
 // @flow
 
 const {SegmentVector} = require('../segment');
-const VertexBuffer = require('../../gl/vertex_buffer');
-const IndexBuffer = require('../../gl/index_buffer');
 const {ProgramConfigurationSet} = require('../program_configuration');
 const createVertexArrayType = require('../vertex_array_type');
 const {LineIndexArray, TriangleIndexArray} = require('../index_array_type');
@@ -16,6 +14,9 @@ import type {Bucket, IndexedFeature, PopulateParameters, SerializedBucket} from 
 import type {ProgramInterface} from '../program_configuration';
 import type StyleLayer from '../../style/style_layer';
 import type {StructArray} from '../../util/struct_array';
+import type Context from '../../gl/context';
+import type IndexBuffer from '../../gl/index_buffer';
+import type VertexBuffer from '../../gl/vertex_buffer';
 import type Point from '@mapbox/point-geometry';
 import type {Transferable} from '../../types/transferable';
 
@@ -98,11 +99,11 @@ class FillBucket implements Bucket {
         };
     }
 
-    upload(gl: WebGLRenderingContext) {
-        this.layoutVertexBuffer = new VertexBuffer(gl, this.layoutVertexArray);
-        this.indexBuffer = new IndexBuffer(gl, this.indexArray);
-        this.indexBuffer2 = new IndexBuffer(gl, this.indexArray2);
-        this.programConfigurations.upload(gl);
+    upload(context: Context) {
+        this.layoutVertexBuffer = context.createVertexBuffer(this.layoutVertexArray);
+        this.indexBuffer = context.createIndexBuffer(this.indexArray);
+        this.indexBuffer2 = context.createIndexBuffer(this.indexArray2);
+        this.programConfigurations.upload(context);
     }
 
     destroy() {
